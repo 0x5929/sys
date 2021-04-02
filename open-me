@@ -26,6 +26,7 @@ else
 	cmd=open
 fi
 
+# open files with appropriate command
 for arg in "$@"; do
 	echo "Opening $arg"
 	$cmd "$arg"
