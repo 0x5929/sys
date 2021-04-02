@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# define usage
+usage (){
+	help="open-me [one-or-more-files-to-open]"
+	echo $help
+
+}
+
+# checking for arguments: 
+if test "$#" -lt 1; then
+	usage
+	exit 1
+fi
+
+# checking for command to use to open 
+# MacOS uses open
+# Linux uses xdg-open
+
+if which xdg-open>/dev/null; then
+	
+	echo "Welcome Linux User"
+	cmd=xdg-open
+else
+	echo "Welcome Mac User"
+	cmd=open
+fi
+
+for arg in "$@"; do
+	echo "Opening $arg"
+	$cmd "$arg"
+done
+
