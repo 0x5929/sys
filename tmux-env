@@ -1,0 +1,73 @@
+#!/bin/bash
+
+
+# To add another environment, edit the following: 
+# 
+# 1. display_usage, last echo: [pwk|pg|<new>]
+# 2. adding an if block for the new environment, adding workingDir, vpnConfg, sessionName
+
+# configurable variables
+hostIP='192.168.1.198'
+socks4TunnelPort='1080'
+
+
+# usage, and arugment parsing
+display_usage() {
+	
+	echo "To start Tmux with specific pentest environments"
+	echo 'Remember to configure script variables, simply `which tmux-env` will give its path' 
+	echo -e "\nUsage: $0 [pwk|pg|] \n"
+}
+
+# if less than two arguments supplied, display usage 
+if [  $# -ne 1 ] 
+then 
+	display_usage
+	exit 1
+fi 
+ 
+# check whether user had supplied -h or --help . If yes display usage 
+if [[ ( $# == "--help") ||  $# == "-h" ]] 
+then 
+	display_usage
+	exit 0
+fi 
+
+
+# depending on the argument passed, we will set the following: 
+# 1. working dir to pull git
+# 2. openvpn 
+# 3. session name
+
+workingDir=""
+vpnConfig=""
+sessionName=""
+if [ $1 = "pg" ]
+then
+	workingDir='/root/Documents/Proven-grounds/'
+	vpnConfig='/root/VPN/pg/pg.ovpn'
+	sessionName='PG'
+elif [ $1 = "pwk" ]
+then
+	workingDir='/root/Documents/oscp/lab/'
+	vpnConfig='/root/VPN/pwk/pwk.ovpn'
+	sessionName='PWK'
+else
+	display_usage
+	exit 1
+fi
+
+# navigate to working dir
+
+cd $workingDir
+
+# launching tmux!
+
+tmux new-session -d -s "$sessionName" -n 'SETUP'
+tmux send-keys "openvpn $vpnConfig" Enter
+tmux split-window -v
+tmux send-keys "ssh -N -R $socks4TunnelPort kevin@$hostIP" Enter
+tmux new-window -n 'KALI' 
+tmux send-keys "git pull" Enter
+tmux -2 attach-session -d
+
