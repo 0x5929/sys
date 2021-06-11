@@ -1,4 +1,4 @@
 # type/copy the following into your terminal
 # then use CTRL-R (reverse history lookup) for `startingapps`
 
-vboxmanage snapshot CurrentClone delete temp; vboxmanage snapshot CurrentClone take temp; vboxmanage startvm CurrentClone & firefox & chrome & cd Documents/ & cherrytree pentest-notes-template.ctb & terminal & #startingapps
+vboxmanage snapshot CurrentClone delete temp; vboxmanage snapshot CurrentClone take temp; vboxmanage startvm CurrentClone & firefox & chrome & cherrytree /home/kevin/Documents/pentest-notes-template.ctb & terminal & #startingapps
