@@ -16,5 +16,6 @@ REM Cherrytree start
 START "" "C:\Program Files\CherryTree\mingw64\bin\cherrytree.exe" "C:\Users\kevin\Documents\Personal\Notes\pentest\pentest-notes-template.ctb"
 
 
-REM PuTTY start
+REM PuTTY start, but lets wait for 30 seconds first, until VM boots
+timeout /t 30 /nobreak > NUL
 START "" "C:\Program Files\PuTTY\putty.exe" -ssh root@192.168.1.112 22
